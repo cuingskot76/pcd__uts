@@ -72,12 +72,10 @@ namespace WinFormsApp1
 
             Color p;
 
-            #region 
             for (int y = 0; y < m - 1; y++)
             {
                 for (int x = 0; x < n - 1; x++)
                 {
-                    // get pixel from (x, y)
                     p = bmp.GetPixel(x, y);
                     r = p.R;
                     g = p.G;
@@ -85,13 +83,10 @@ namespace WinFormsApp1
 
                     i = Convert.ToInt16(0.2989 * r + 0.5870 * g + 0.1141 * b);
 
-                    // convert pixel values(r, g, b) with i
                     bmp.SetPixel(x, y, Color.FromArgb(i, i, i));
                 }
             }
-            // show the result to "image form 2"
             pictureBox2.Image = bmp;
-            #endregion
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -165,6 +160,11 @@ namespace WinFormsApp1
                 }
             }
             pictureBox4.Image = bmp;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

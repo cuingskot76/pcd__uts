@@ -37,6 +37,10 @@
             this.button5 = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -45,7 +49,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(244, 65);
+            this.button1.Location = new System.Drawing.Point(334, 98);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -55,7 +59,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(244, 117);
+            this.button2.Location = new System.Drawing.Point(334, 150);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(117, 54);
             this.button2.TabIndex = 1;
@@ -65,9 +69,9 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(44, 40);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 70);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(179, 268);
+            this.pictureBox1.Size = new System.Drawing.Size(292, 268);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -75,7 +79,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(244, 203);
+            this.button3.Location = new System.Drawing.Point(334, 236);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 3;
@@ -85,7 +89,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(382, 40);
+            this.pictureBox2.Location = new System.Drawing.Point(546, 70);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(257, 268);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -95,7 +99,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(657, 65);
+            this.button4.Location = new System.Drawing.Point(835, 98);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(108, 42);
             this.button4.TabIndex = 5;
@@ -105,7 +109,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(657, 148);
+            this.button5.Location = new System.Drawing.Point(835, 181);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(108, 45);
             this.button5.TabIndex = 6;
@@ -115,27 +119,64 @@
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(802, 40);
+            this.pictureBox3.Location = new System.Drawing.Point(1009, 70);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(174, 268);
+            this.pictureBox3.Size = new System.Drawing.Size(249, 268);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox3.TabIndex = 7;
             this.pictureBox3.TabStop = false;
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Location = new System.Drawing.Point(382, 344);
+            this.pictureBox4.Location = new System.Drawing.Point(546, 391);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(257, 250);
+            this.pictureBox4.Size = new System.Drawing.Size(257, 267);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox4.TabIndex = 8;
             this.pictureBox4.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(99, 28);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 23);
+            this.textBox1.TabIndex = 9;
+            this.textBox1.Text = "Gambar asal";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(629, 28);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(111, 23);
+            this.textBox2.TabIndex = 10;
+            this.textBox2.Text = "Gambar grayscale";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(1068, 28);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(145, 23);
+            this.textBox3.TabIndex = 11;
+            this.textBox3.Text = "Peningkatan kecerahan";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(416, 502);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 23);
+            this.textBox4.TabIndex = 12;
+            this.textBox4.Text = "Membalik citra";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(988, 629);
+            this.ClientSize = new System.Drawing.Size(1304, 663);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pictureBox4);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.button5);
@@ -152,6 +193,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -166,5 +208,9 @@
         private Button button5;
         private PictureBox pictureBox3;
         private PictureBox pictureBox4;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private TextBox textBox3;
+        private TextBox textBox4;
     }
 }
