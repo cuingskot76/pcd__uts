@@ -151,12 +151,6 @@ namespace WinFormsApp1
 
                     p = Color.FromArgb(255, (255 - p.R), (255 - p.G), (255 - p.B));
                     bmp.SetPixel(x, y, p);
-
-                    // int xg = (int)((p.R + p.G + p.B) / 3);
-                    // int xi = 255 - xg;
-                    // 
-                    // Color new_color = Color.FromArgb(xi, xi, xi);
-                    // bmp.SetPixel(x, y, new_color);
                 }
             }
             pictureBox4.Image = bmp;
