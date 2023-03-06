@@ -160,5 +160,105 @@ namespace WinFormsApp1
         {
 
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
+
+            int m = bmp.Height;
+            int n = bmp.Width;
+
+            // store 8 address of pixel
+            Color T1, T2, T3, T4, T5, T6, T7, T8;
+
+            // store pixel f(x,y)
+            Color f;
+
+            // store pixel f(x,y) after filter
+            int r;
+
+            // store 8 values of pixel
+            int[] p = new int[8];
+
+            int max;
+            int min;
+
+            // * Filter Batas
+            for (int y = 1; y < m - 1; y++)
+            {
+                for (int x = 1; x < n - 1; x++)
+                {
+                    // pixel address f(x, y)
+                    f = bmp.GetPixel(x, y);
+
+                    // pixel address f(x, y)
+                    T1 = bmp.GetPixel(x + 1, y);
+                    T2 = bmp.GetPixel(x + 1, y - 1);
+                    T3 = bmp.GetPixel(x, y - 1);
+                    T4 = bmp.GetPixel(x - 1, y - 1);
+                    T5 = bmp.GetPixel(x - 1, y);
+                    T6 = bmp.GetPixel(x - 1, y + 1);
+                    T7 = bmp.GetPixel(x, y + 1);
+                    T8 = bmp.GetPixel(x + 1, y + 1);
+
+                    // pixel value f(x,y)
+                    r = f.R;
+
+                    // store new 8 pixels values
+                    p[0] = T1.R;
+                    p[1] = T2.R;
+                    p[2] = T3.R;
+                    p[3] = T4.R;
+                    p[4] = T5.R;
+                    p[5] = T6.R;
+                    p[6] = T7.R;
+                    p[7] = T8.R;
+
+                    // set min and max
+                    max = p[0];
+                    min = p[0];
+
+                    // finding min and max pixel
+                    for (int j = 1; j < 8; j++)
+                    {
+                        if (p[j] > max)
+                        {
+                            max = p[j];
+                        }
+                        else
+                        {
+                            max = max;
+                        }
+                        if (p[j] < min)
+                        {
+                            min = p[j];
+                        }
+                        else
+                        {
+                            min = min;
+                        }
+                    }
+
+                    // replace r with min and max
+                    if (r < min)
+                    {
+                        r = min;
+                        bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
+                    }
+                    else if (r > max)
+                    {
+                        r = max;
+                        bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
+                    }
+                    else
+                    {
+                        r = r;
+                        bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
+                    }
+                }
+            }
+            pictureBox2.Image = bmp2;
+        }
     }
 }

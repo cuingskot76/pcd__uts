@@ -179,7 +179,8 @@
             button6.TabIndex = 13;
             button6.Text = "Filter Batas";
             button6.UseVisualStyleBackColor = true;
-            
+            button6.Click += button6_Click;
+            // 
             // button7
             // 
             button7.Location = new Point(334, 303);
