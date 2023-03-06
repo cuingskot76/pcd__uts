@@ -260,5 +260,108 @@ namespace WinFormsApp1
             }
             pictureBox2.Image = bmp2;
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
+
+            int m = bmp.Height;
+            int n = bmp.Width;
+
+            Color T1, T2, T3, T4, T5, T6, T7, T8;
+
+            Color f;
+
+            int r;
+
+            int[] p = new int[8];
+
+            for (int y = 1; y < m - 1; y++)
+            {
+                for (int x = 1; x < n - 1; x++)
+                {
+                    f = bmp.GetPixel(x, y);
+
+                    T1 = bmp.GetPixel(x + 1, y);
+                    T2 = bmp.GetPixel(x + 1, y - 1);
+                    T3 = bmp.GetPixel(x, y - 1);
+                    T4 = bmp.GetPixel(x - 1, y - 1);
+                    T5 = bmp.GetPixel(x - 1, y);
+                    T6 = bmp.GetPixel(x - 1, y + 1);
+                    T7 = bmp.GetPixel(x, y + 1);
+                    T8 = bmp.GetPixel(x + 1, y + 1);
+
+                    r = f.R;
+
+                    p[0] = T1.R;
+                    p[1] = T2.R;
+                    p[2] = T3.R;
+                    p[3] = T4.R;
+                    p[4] = T5.R;
+                    p[5] = T6.R;
+                    p[6] = T7.R;
+                    p[7] = T8.R;
+
+                    // avegare
+                    r = Convert.ToInt16((r + p[0] + p[1] + p[2] + p[3] + p[4] + p[5] + p[6] + p[7]) / 9);
+
+                    bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
+                }
+            }
+            pictureBox2.Image = bmp2;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
+
+            int m = bmp.Height;
+            int n = bmp.Width;
+
+            Color T1, T2, T3, T4, T5, T6, T7, T8;
+
+            Color f;
+
+            int r;
+
+            int[] p = new int[8];
+
+            for (int y = 1; y < m - 1; y++)
+            {
+                for (int x = 1; x < n - 1; x++)
+                {
+                    f = bmp.GetPixel(x, y);
+
+                    T1 = bmp.GetPixel(x + 1, y);
+                    T2 = bmp.GetPixel(x + 1, y - 1);
+                    T3 = bmp.GetPixel(x, y - 1);
+                    T4 = bmp.GetPixel(x - 1, y - 1);
+                    T5 = bmp.GetPixel(x - 1, y);
+                    T6 = bmp.GetPixel(x - 1, y + 1);
+                    T7 = bmp.GetPixel(x, y + 1);
+                    T8 = bmp.GetPixel(x + 1, y + 1);
+
+                    p[0] = T1.R;
+                    p[1] = T2.R;
+                    p[2] = T3.R;
+                    p[3] = T4.R;
+                    p[4] = T5.R;
+                    p[5] = T6.R;
+                    p[6] = T7.R;
+                    p[7] = T8.R;
+
+                    // sorting
+                    Array.Sort(p);
+
+                    // get the median
+                    r = p[4];
+
+                    bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
+                }
+            }
+            pictureBox2.Image = bmp2;
+        }
     }
 }

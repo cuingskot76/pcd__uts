@@ -189,6 +189,7 @@
             button7.TabIndex = 14;
             button7.Text = "Filter Pererataan";
             button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
             // 
             // button8
             // 
@@ -198,6 +199,7 @@
             button8.TabIndex = 15;
             button8.Text = "FIlter Median";
             button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
             // 
             // Form1
             // 
