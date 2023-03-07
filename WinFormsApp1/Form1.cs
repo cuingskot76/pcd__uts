@@ -363,5 +363,111 @@ namespace WinFormsApp1
             }
             pictureBox2.Image = bmp2;
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
+
+            int heigh = bmp.Height;
+            int width = bmp.Width;
+
+            // default array size, 0 - 255
+            int[] hist = new int[256];
+
+            // array untuk menampung histogram yg keabuannya muncul di citra
+            int[] c = new int[256];
+
+            // array untuk menampung a (hasil akhir)
+            double[] a = new double[256];
+
+            int t, n;
+            int jumlahAras = 0;
+            Color P;
+
+            for (int y = 1; y < heigh; y++)
+            {
+                for (int x = 1; x < width; x++)
+                {
+                    P = bmp.GetPixel(x, y);
+                    t = P.R;
+
+                    // hist[i] => langkah 1
+                    for (int i = 0; i < 256; i++)
+                    {
+                        if (t == i)
+                        {
+                            hist[i] = hist[i] + 1;
+                        }
+                    }
+                }
+            }
+
+            // jumlah aras yg ada dicitra
+            for (int j = 0; j < 256; j++)
+            {
+                Debug.WriteLine("hist[" + j + "] :" + hist[j]);
+
+                if (hist[j] != 0)
+                {
+                    jumlahAras = jumlahAras + 1;
+                }
+            }
+            Debug.WriteLine("Jumlah aras: " + jumlahAras);
+
+            // c[i] => langkah 2
+            for (int j = 0; j < 256; j++)
+            {
+                for (int k = 0; k <= j; k++)
+                {
+                    // hanya hist yg intensitasnya ada di citra yg akan diproses
+                    if (hist[j] != 0)
+                    {
+                        c[j] = c[j] + hist[k];
+                    }
+                }
+            }
+            for (int j = 0; j < 256; j++)
+            {
+                Debug.WriteLine("c[" + j + "] :" + c[j]);
+            }
+
+            n = heigh * width;
+            Debug.WriteLine("n : " + n);
+
+            // a[i] => langkah 3
+            for (int j = 0; j < 256; j++)
+            {
+                if (c[j] != 0)
+                {
+                    // a[j] = (jumlahAras - 1) * (convert.todouble(c[j]) / (convert.todouble(n)))
+                    a[j] = Math.Round(((jumlahAras - 1) * (Convert.ToDouble(c[j]) / (Convert.ToDouble(n)))), 0);
+                }
+            }
+            for (int j = 0; j < 256; j++)
+            {
+                Debug.WriteLine("a[" + j + "] : " + a[j]);
+            }
+
+            // replace with a[i]
+            for (int y = 0; y < heigh - 1; y++)
+            {
+                for (int x = 1; x < width - 1; x++)
+                {
+                    P = bmp.GetPixel(x, y);
+                    t = P.R;
+
+                    for (int j = 0; j < 256; j++)
+                    {
+                        if (t == j)
+                        {
+                            t = Convert.ToInt32(a[j]);
+                        }
+                    }
+                    bmp2.SetPixel(x, y, Color.FromArgb(t, t, t));
+                }
+            }
+            pictureBox2.Image = bmp2;
+        }
     }
 }
