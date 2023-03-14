@@ -469,5 +469,61 @@ namespace WinFormsApp1
             }
             pictureBox2.Image = bmp2;
         }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
+
+            int m = bmp.Height;
+            int n = bmp.Width;
+            int t;
+            Color P;
+            int m2 = 1;
+            int n2 = 1;
+            int g = 0;
+
+            int[,] h = new int[4, 4];
+
+            // kernel h (quick mask)
+            h[1, 1] = -1;
+            h[1, 2] = 0;
+            h[1, 3] = -1;
+            h[2, 1] = 0;
+            h[2, 2] = 4;
+            h[2, 3] = 0;
+            h[3, 1] = -1;
+            h[3, 2] = 0;
+            h[3, 3] = -1;
+
+            for (int y = 1; y < m - 1; y++)
+            {
+                for (int x = 1; x < n - 1; x++)
+                {
+                    // konvolusi
+                    for (int p = -m2; p <= m2; p++)
+                    {
+                        for (int q = -n2; q <= n2; q++)
+                        {
+                            P = bmp.GetPixel(x - p, y - q);
+                            t = P.R;
+                            // rumus konvolusi
+                            g = g + h[p + m2 + 1, q + n2 + 1] * t;
+
+                            if (g < 0)
+                            {
+                                g = 0;
+                            }
+                            if (g > 255)
+                            {
+                                g = 255;
+                            }
+                        }
+                    }
+                    bmp2.SetPixel(x, y, Color.FromArgb(g, g, g));
+                }
+            }
+            pictureBox2.Image = bmp2;
+        }
     }
 }
