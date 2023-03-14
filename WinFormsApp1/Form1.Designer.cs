@@ -46,10 +46,15 @@
             button8 = new Button();
             button9 = new Button();
             button10 = new Button();
+            button11 = new Button();
+            button12 = new Button();
+            button13 = new Button();
+            pictureBox5 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -223,11 +228,50 @@
             button10.UseVisualStyleBackColor = true;
             button10.Click += button10_Click;
             // 
+            // button11
+            // 
+            button11.Location = new Point(835, 276);
+            button11.Name = "button11";
+            button11.Size = new Size(108, 47);
+            button11.TabIndex = 18;
+            button11.Text = "Konversi Citra Biner";
+            button11.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(866, 405);
+            button12.Name = "button12";
+            button12.Size = new Size(104, 43);
+            button12.TabIndex = 19;
+            button12.Text = "Deteksi Tepi";
+            button12.UseVisualStyleBackColor = true;
+            // 
+            // button13
+            // 
+            button13.Location = new Point(835, 474);
+            button13.Name = "button13";
+            button13.Size = new Size(159, 51);
+            button13.TabIndex = 20;
+            button13.Text = "Cari luas, perimeter, kebulatan, kekompakan";
+            button13.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox5
+            // 
+            pictureBox5.Location = new Point(1009, 391);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(261, 267);
+            pictureBox5.TabIndex = 21;
+            pictureBox5.TabStop = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1304, 663);
+            Controls.Add(pictureBox5);
+            Controls.Add(button13);
+            Controls.Add(button12);
+            Controls.Add(button11);
             Controls.Add(button10);
             Controls.Add(button9);
             Controls.Add(button8);
@@ -252,6 +296,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -276,5 +321,9 @@
         private Button button8;
         private Button button9;
         private Button button10;
+        private Button button11;
+        private Button button12;
+        private Button button13;
+        private PictureBox pictureBox5;
     }
 }
