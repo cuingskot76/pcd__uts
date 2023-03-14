@@ -230,27 +230,28 @@
             // 
             // button11
             // 
-            button11.Location = new Point(835, 276);
+            button11.Location = new Point(835, 268);
             button11.Name = "button11";
-            button11.Size = new Size(108, 47);
+            button11.Size = new Size(108, 45);
             button11.TabIndex = 18;
             button11.Text = "Konversi Citra Biner";
             button11.UseVisualStyleBackColor = true;
+            button11.Click += button11_Click;
             // 
             // button12
             // 
-            button12.Location = new Point(866, 405);
+            button12.Location = new Point(844, 417);
             button12.Name = "button12";
-            button12.Size = new Size(104, 43);
+            button12.Size = new Size(108, 45);
             button12.TabIndex = 19;
             button12.Text = "Deteksi Tepi";
             button12.UseVisualStyleBackColor = true;
             // 
             // button13
             // 
-            button13.Location = new Point(835, 474);
+            button13.Location = new Point(825, 485);
             button13.Name = "button13";
-            button13.Size = new Size(159, 51);
+            button13.Size = new Size(159, 55);
             button13.TabIndex = 20;
             button13.Text = "Cari luas, perimeter, kebulatan, kekompakan";
             button13.UseVisualStyleBackColor = true;
@@ -259,7 +260,7 @@
             // 
             pictureBox5.Location = new Point(1009, 391);
             pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(261, 267);
+            pictureBox5.Size = new Size(259, 267);
             pictureBox5.TabIndex = 21;
             pictureBox5.TabStop = false;
             // 

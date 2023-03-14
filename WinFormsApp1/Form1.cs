@@ -525,5 +525,34 @@ namespace WinFormsApp1
             }
             pictureBox2.Image = bmp2;
         }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            int h = bmp.Height;
+            int w = bmp.Width;
+            Color p;
+            int i;
+
+            // thresholding/ binerisasi (mendapatkan citra biner)
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    p = bmp.GetPixel(x, y);
+                    i = p.B;
+
+                    if (i < 150)
+                    {
+                        bmp.SetPixel(x, y, Color.FromArgb(255, 255, 255));
+                    }
+                    else
+                    {
+                        bmp.SetPixel(x, y, Color.FromArgb(0, 0, 0));
+                    }
+                }
+            }
+            pictureBox3.Image = bmp;
+        }
     }
 }
