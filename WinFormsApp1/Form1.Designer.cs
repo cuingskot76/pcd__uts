@@ -246,6 +246,7 @@
             button12.TabIndex = 19;
             button12.Text = "Deteksi Tepi";
             button12.UseVisualStyleBackColor = true;
+            button12.Click += button12_Click;
             // 
             // button13
             // 
@@ -255,6 +256,7 @@
             button13.TabIndex = 20;
             button13.Text = "Cari luas, perimeter, kebulatan, kekompakan";
             button13.UseVisualStyleBackColor = true;
+            button13.Click += button13_Click;
             // 
             // pictureBox5
             // 

@@ -554,5 +554,117 @@ namespace WinFormsApp1
             }
             pictureBox3.Image = bmp;
         }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            // Deteksi tepi object
+            Bitmap bmp3 = new Bitmap(pictureBox3.Image); //citra biner
+            Bitmap bmp4 = new Bitmap(pictureBox3.Image); //citra biner
+
+            int h = bmp3.Height;
+            int w = bmp3.Width;
+
+            Color p, p8, p0, p1, p2, p3, p4, p5, p6, p7;
+            int r8 = 0, r0, r1, r2, r3, r4, r5, r6, r7;
+            int sigma = 0;
+
+            for (int q = 1; q < w - 1; q++)
+            {
+                for (int s = 1; s < h - 1; s++)
+                {
+                    p8 = bmp3.GetPixel(q, s);
+                    p0 = bmp3.GetPixel(q, s + 1);
+                    p1 = bmp3.GetPixel(q - 1, s + 1);
+                    p2 = bmp3.GetPixel(q - 1, s);
+                    p3 = bmp3.GetPixel(q - 1, s - 1);
+                    p4 = bmp3.GetPixel(q, s - 1);
+                    p5 = bmp3.GetPixel(q + 1, s - 1);
+                    p6 = bmp3.GetPixel(q + 1, s);
+                    p7 = bmp3.GetPixel(q + 1, s + 1);
+                    r8 = p8.R;
+                    r0 = p0.R;
+                    r1 = p1.R;
+                    r2 = p2.R;
+                    r3 = p3.R;
+                    r4 = p4.R;
+                    r5 = p5.R;
+                    r6 = p6.R;
+                    r7 = p7.R;
+
+                    sigma = r0 + r1 + r2 + r3 + r4 + r5 + r6 + r7;
+
+                    if (sigma == 2040) //nilai 2040 = semua piksel tetangga bernilai 255
+                    {
+                        bmp4.SetPixel(q, s, Color.FromArgb(0, 0, 0));
+                    }
+                    else
+                    {
+                        bmp4.SetPixel(q, s, Color.FromArgb(r8, r8, r8));
+                    }
+                }
+            }
+            pictureBox4.Image = bmp4;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox3.Image);
+            Bitmap bmp1 = new Bitmap(pictureBox4.Image);
+
+            int h = bmp1.Height;
+            int w = bmp1.Width;
+            Color p;
+
+            #region perimeter/ keliling
+            int perimeter = 0;
+            int a;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    p = bmp1.GetPixel(x, y);
+                    a = p.R;
+
+                    if (a == 255)
+                    {
+                        perimeter = perimeter + 1;
+                    }
+                }
+            }
+            Debug.WriteLine("perimeter : " + perimeter);
+            #endregion
+
+            #region luas/ area
+            int luas = 0;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    p = bmp.GetPixel(x, y);
+                    a = p.R;
+
+                    if (a == 255)
+                    {
+                        luas = luas + 1;
+                    }
+                }
+            }
+            Debug.WriteLine("luas area : " + luas);
+            #endregion
+
+            #region compactness
+            double compactness = 0.0;
+
+            compactness = 1 - ((4 * (22.0 / 7.0) * luas) / Math.Pow(perimeter, 2));
+            Debug.WriteLine("compactness : " + compactness);
+            #endregion
+
+            #region roundeness
+            double roudness = 0.0;
+
+            roudness = (4 * (22.0 / 7.0)) * (luas / Math.Pow(perimeter, 2));
+            Debug.WriteLine("roudness : " + roudness);
+            #endregion
+        }
     }
 }
