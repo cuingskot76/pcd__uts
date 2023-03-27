@@ -9,6 +9,7 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
+        // Get picture
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -25,39 +26,8 @@ namespace WinFormsApp1
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            // get image file
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
 
-            int r, g, b;
-
-            Color p;
-
-            // get pixel with address (0,0)
-            p = bmp.GetPixel(0, 0);
-            r = p.R;
-            g = p.G;
-            b = p.B;
-
-            Debug.WriteLine("(0, 0) : R=" + r);
-            Debug.WriteLine("(0, 0) : G=" + g);
-            Debug.WriteLine("(0, 0) : B=" + b);
-
-            int m = bmp.Height;
-            int n = bmp.Width;
-
-            Color q = bmp.GetPixel(n - 1, m - 1);
-            r = q.R;
-            g = q.G;
-            b = q.B;
-
-            Debug.WriteLine("(" + (n - 1) + "," + (m - 1) + ") : R=" + r);
-            Debug.WriteLine("(" + (n - 1) + "," + (m - 1) + ") : G=" + g);
-            Debug.WriteLine("(" + (n - 1) + "," + (m - 1) + ") : B=" + b);
-
-        }
-
+        // Grayscale
         private void button3_Click(object sender, EventArgs e)
         {
             // get image from "image form 1"
@@ -99,42 +69,11 @@ namespace WinFormsApp1
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void pictureBox4_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(pictureBox2.Image);
 
-            int r, g, b;
-            int i;
-
-            int m = bmp.Height;
-            int n = bmp.Width;
-
-            Color p;
-
-            for (int y = 0; y < m - 1; y++)
-            {
-                for (int x = 0; x < n - 1; x++)
-                {
-                    p = bmp.GetPixel(x, y);
-                    r = p.R;
-
-                    // intensitas ditambah B = 40
-                    i = r + 40;
-
-                    if (i > 255)
-                    {
-                        i = 255;
-                    }
-                    else if (i < 0)
-                    {
-                        i = 0;
-                    }
-
-                    bmp.SetPixel(x, y, Color.FromArgb(i, i, i));
-                }
-            }
-            pictureBox3.Image = bmp;
         }
+
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -161,510 +100,242 @@ namespace WinFormsApp1
 
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        // Button-3
+        private void button13_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
+            Bitmap bmp2 = new Bitmap(pictureBox2.Image);
+            int h = bmp2.Height;
+            int w = bmp2.Width;
+            Color p;
+            double N = h * w;
 
-            int m = bmp.Height;
-            int n = bmp.Width;
+            int[] hist = new int[256]; // untuk histogram citra grayscale
+            double[] w1 = new double[256]; // weight/ bobot background
+            double[] w2 = new double[256]; // weight/ bobot foreground
+            double[] m1 = new double[256]; // mean backgraound
+            double[] m2 = new double[256]; // mean foreground
+            double[] v1 = new double[256]; // variance background
+            double[] v2 = new double[256]; // variance foreground
+            double[] WCV = new double[256]; // Within Class Variance
+            double[] prob = new double[256];
+            double w2_ = 0;
+            double m2_ = 0;
+            double m1_ = 0;
+            double w1_ = 0;
+            double v1_ = 0;
+            double v2_ = 0;
+            double WCV_ = 0;
 
-            // store 8 address of pixel
-            Color T1, T2, T3, T4, T5, T6, T7, T8;
+            // get histogram citra grayscale
+            #region get histogram citra grayscale
+            int intensitas;
 
-            // store pixel f(x,y)
-            Color f;
-
-            // store pixel f(x,y) after filter
-            int r;
-
-            // store 8 values of pixel
-            int[] p = new int[8];
-
-            int max;
-            int min;
-
-            // * Filter Batas
-            for (int y = 1; y < m - 1; y++)
+            for (int y = 0; y < h; y++)
             {
-                for (int x = 1; x < n - 1; x++)
+                for (int x = 0; x < w; x++)
                 {
-                    // pixel address f(x, y)
-                    f = bmp.GetPixel(x, y);
-
-                    // pixel address f(x, y)
-                    T1 = bmp.GetPixel(x + 1, y);
-                    T2 = bmp.GetPixel(x + 1, y - 1);
-                    T3 = bmp.GetPixel(x, y - 1);
-                    T4 = bmp.GetPixel(x - 1, y - 1);
-                    T5 = bmp.GetPixel(x - 1, y);
-                    T6 = bmp.GetPixel(x - 1, y + 1);
-                    T7 = bmp.GetPixel(x, y + 1);
-                    T8 = bmp.GetPixel(x + 1, y + 1);
-
-                    // pixel value f(x,y)
-                    r = f.R;
-
-                    // store new 8 pixels values
-                    p[0] = T1.R;
-                    p[1] = T2.R;
-                    p[2] = T3.R;
-                    p[3] = T4.R;
-                    p[4] = T5.R;
-                    p[5] = T6.R;
-                    p[6] = T7.R;
-                    p[7] = T8.R;
-
-                    // set min and max
-                    max = p[0];
-                    min = p[0];
-
-                    // finding min and max pixel
-                    for (int j = 1; j < 8; j++)
-                    {
-                        if (p[j] > max)
-                        {
-                            max = p[j];
-                        }
-                        else
-                        {
-                            max = max;
-                        }
-                        if (p[j] < min)
-                        {
-                            min = p[j];
-                        }
-                        else
-                        {
-                            min = min;
-                        }
-                    }
-
-                    // replace r with min and max
-                    if (r < min)
-                    {
-                        r = min;
-                        bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
-                    }
-                    else if (r > max)
-                    {
-                        r = max;
-                        bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
-                    }
-                    else
-                    {
-                        r = r;
-                        bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
-                    }
-                }
-            }
-            pictureBox2.Image = bmp2;
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
-
-            int m = bmp.Height;
-            int n = bmp.Width;
-
-            Color T1, T2, T3, T4, T5, T6, T7, T8;
-
-            Color f;
-
-            int r;
-
-            int[] p = new int[8];
-
-            for (int y = 1; y < m - 1; y++)
-            {
-                for (int x = 1; x < n - 1; x++)
-                {
-                    f = bmp.GetPixel(x, y);
-
-                    T1 = bmp.GetPixel(x + 1, y);
-                    T2 = bmp.GetPixel(x + 1, y - 1);
-                    T3 = bmp.GetPixel(x, y - 1);
-                    T4 = bmp.GetPixel(x - 1, y - 1);
-                    T5 = bmp.GetPixel(x - 1, y);
-                    T6 = bmp.GetPixel(x - 1, y + 1);
-                    T7 = bmp.GetPixel(x, y + 1);
-                    T8 = bmp.GetPixel(x + 1, y + 1);
-
-                    r = f.R;
-
-                    p[0] = T1.R;
-                    p[1] = T2.R;
-                    p[2] = T3.R;
-                    p[3] = T4.R;
-                    p[4] = T5.R;
-                    p[5] = T6.R;
-                    p[6] = T7.R;
-                    p[7] = T8.R;
-
-                    // avegare
-                    r = Convert.ToInt16((r + p[0] + p[1] + p[2] + p[3] + p[4] + p[5] + p[6] + p[7]) / 9);
-
-                    bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
-                }
-            }
-            pictureBox2.Image = bmp2;
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
-
-            int m = bmp.Height;
-            int n = bmp.Width;
-
-            Color T1, T2, T3, T4, T5, T6, T7, T8;
-
-            Color f;
-
-            int r;
-
-            int[] p = new int[8];
-
-            for (int y = 1; y < m - 1; y++)
-            {
-                for (int x = 1; x < n - 1; x++)
-                {
-                    f = bmp.GetPixel(x, y);
-
-                    T1 = bmp.GetPixel(x + 1, y);
-                    T2 = bmp.GetPixel(x + 1, y - 1);
-                    T3 = bmp.GetPixel(x, y - 1);
-                    T4 = bmp.GetPixel(x - 1, y - 1);
-                    T5 = bmp.GetPixel(x - 1, y);
-                    T6 = bmp.GetPixel(x - 1, y + 1);
-                    T7 = bmp.GetPixel(x, y + 1);
-                    T8 = bmp.GetPixel(x + 1, y + 1);
-
-                    p[0] = T1.R;
-                    p[1] = T2.R;
-                    p[2] = T3.R;
-                    p[3] = T4.R;
-                    p[4] = T5.R;
-                    p[5] = T6.R;
-                    p[6] = T7.R;
-                    p[7] = T8.R;
-
-                    // sorting
-                    Array.Sort(p);
-
-                    // get the median
-                    r = p[4];
-
-                    bmp2.SetPixel(x, y, Color.FromArgb(r, r, r));
-                }
-            }
-            pictureBox2.Image = bmp2;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
-
-            int heigh = bmp.Height;
-            int width = bmp.Width;
-
-            // default array size, 0 - 255
-            int[] hist = new int[256];
-
-            // array untuk menampung histogram yg keabuannya muncul di citra
-            int[] c = new int[256];
-
-            // array untuk menampung a (hasil akhir)
-            double[] a = new double[256];
-
-            int t, n;
-            int jumlahAras = 0;
-            Color P;
-
-            for (int y = 1; y < heigh; y++)
-            {
-                for (int x = 1; x < width; x++)
-                {
-                    P = bmp.GetPixel(x, y);
-                    t = P.R;
-
-                    // hist[i] => langkah 1
-                    for (int i = 0; i < 256; i++)
-                    {
-                        if (t == i)
-                        {
-                            hist[i] = hist[i] + 1;
-                        }
-                    }
-                }
-            }
-
-            // jumlah aras yg ada dicitra
-            for (int j = 0; j < 256; j++)
-            {
-                Debug.WriteLine("hist[" + j + "] :" + hist[j]);
-
-                if (hist[j] != 0)
-                {
-                    jumlahAras = jumlahAras + 1;
-                }
-            }
-            Debug.WriteLine("Jumlah aras: " + jumlahAras);
-
-            // c[i] => langkah 2
-            for (int j = 0; j < 256; j++)
-            {
-                for (int k = 0; k <= j; k++)
-                {
-                    // hanya hist yg intensitasnya ada di citra yg akan diproses
-                    if (hist[j] != 0)
-                    {
-                        c[j] = c[j] + hist[k];
-                    }
-                }
-            }
-            for (int j = 0; j < 256; j++)
-            {
-                Debug.WriteLine("c[" + j + "] :" + c[j]);
-            }
-
-            n = heigh * width;
-            Debug.WriteLine("n : " + n);
-
-            // a[i] => langkah 3
-            for (int j = 0; j < 256; j++)
-            {
-                if (c[j] != 0)
-                {
-                    // a[j] = (jumlahAras - 1) * (convert.todouble(c[j]) / (convert.todouble(n)))
-                    a[j] = Math.Round(((jumlahAras - 1) * (Convert.ToDouble(c[j]) / (Convert.ToDouble(n)))), 0);
-                }
-            }
-            for (int j = 0; j < 256; j++)
-            {
-                Debug.WriteLine("a[" + j + "] : " + a[j]);
-            }
-
-            // replace with a[i]
-            for (int y = 0; y < heigh - 1; y++)
-            {
-                for (int x = 1; x < width - 1; x++)
-                {
-                    P = bmp.GetPixel(x, y);
-                    t = P.R;
+                    p = bmp2.GetPixel(x, y);
+                    intensitas = p.B;
 
                     for (int j = 0; j < 256; j++)
                     {
-                        if (t == j)
+                        if (intensitas == j)
                         {
-                            t = Convert.ToInt32(a[j]);
+                            hist[j] = hist[j] + 1;
+                            break;
                         }
                     }
-                    bmp2.SetPixel(x, y, Color.FromArgb(t, t, t));
                 }
             }
-            pictureBox2.Image = bmp2;
-        }
+            #endregion
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
-
-            int m = bmp.Height;
-            int n = bmp.Width;
-            int t;
-            Color P;
-            int m2 = 1;
-            int n2 = 1;
-            int g = 0;
-
-            int[,] h = new int[4, 4];
-
-            // kernel h (quick mask)
-            h[1, 1] = -1;
-            h[1, 2] = 0;
-            h[1, 3] = -1;
-            h[2, 1] = 0;
-            h[2, 2] = 4;
-            h[2, 3] = 0;
-            h[3, 1] = -1;
-            h[3, 2] = 0;
-            h[3, 3] = -1;
-
-            for (int y = 1; y < m - 1; y++)
+            // get probabilitas intensitas value
+            #region get probabilitas
+            for (int l = 0; l < 256; l++)
             {
-                for (int x = 1; x < n - 1; x++)
-                {
-                    // konvolusi
-                    for (int p = -m2; p <= m2; p++)
-                    {
-                        for (int q = -n2; q <= n2; q++)
-                        {
-                            P = bmp.GetPixel(x - p, y - q);
-                            t = P.R;
-                            // rumus konvolusi
-                            g = g + h[p + m2 + 1, q + n2 + 1] * t;
+                prob[l] = hist[l] / N;
+            }
+            #endregion
 
-                            if (g < 0)
-                            {
-                                g = 0;
-                            }
-                            if (g > 255)
-                            {
-                                g = 255;
-                            }
-                        }
-                    }
-                    bmp2.SetPixel(x, y, Color.FromArgb(g, g, g));
+            // get weight background and weight foreground value
+            #region get weight background and foreground value
+            for (int l = 0; l < 256; l++)
+            {
+                w1_ = 0;
+                for (int m = l; m > 0; m--)
+                {
+                    w1_ = w1_ + prob[m];
+                }
+                w1[l] = w1_;
+            }
+            for (int l = 0; l < 256; l++)
+            {
+                w2_ = 0;
+                for (int m = l + 1; m < 256; m++)
+                {
+                    w2_ = w2_ + prob[m];
+                }
+                w2[l] = w2_;
+            }
+            #endregion
+
+            // get mean background and mean foreground
+            #region get mean background and mean foreground
+            for (int l = 0; l < 256; l++)
+            {
+                w1_ = 0;
+                m1_ = 0;
+                for (int m = l; m > 0; m--)
+                {
+                    w1_ = w1_ + hist[m];
+                }
+                for (int n = l; n > 0; n--)
+                {
+                    m1_ = (m1_ + (n * hist[n]));
+                }
+                if (w1_ == 0)
+                {
+                    m1[l] = 0;
+                }
+                else
+                {
+                    m1[l] = m1_ / w1_;
                 }
             }
-            pictureBox2.Image = bmp2;
-        }
 
-        private void button11_Click(object sender, EventArgs e)
-        {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            int h = bmp.Height;
-            int w = bmp.Width;
-            Color p;
-            int i;
+            for (int l = 0; l < 256; l++)
+            {
+                w2_ = 0;
+                m2_ = 0;
 
-            // thresholding/ binerisasi (mendapatkan citra biner)
+                for (int m = l + 1; m < 256; m++)
+                {
+                    w2_ = w2_ + hist[m];
+                }
+                for (int n = l + 1; n < 256; n++)
+                {
+                    m2_ = (m2_ + (n * hist[n]));
+                }
+                if (w2_ == 0)
+                {
+                    m2[l] = 0;
+                }
+                else
+                {
+                    m2[l] = m2_ / w2_;
+                }
+            }
+            #endregion
+
+            // get variance background and foreground
+            #region get variance background and foreground
+            for (int l = 0; l < 256; l++)
+            {
+                w2_ = 0;
+                v2_ = 0;
+
+                for (int m = l + 1; m < 256; m++)
+                {
+                    v2_ = v2_ + Math.Pow((m - m2[m]), 2) * hist[m];
+                }
+                for (int n = l + 1; n < 256; n++)
+                {
+                    w2_ = w2_ + hist[n];
+                }
+                if (w2_ == 0)
+                {
+                    v2[l] = 0;
+                }
+                else
+                {
+                    v2[l] = v2_ / w2_;
+                }
+            }
+
+            for (int l = 0; l < 256; l++)
+            {
+                w1_ = 0;
+                v1_ = 0;
+                for (int m = l; m > 0; m--)
+                {
+                    v1_ = v1_ + Math.Pow((m - m1[m]), 2) * hist[m];
+                }
+                for (int n = l; n > 0; n--)
+                {
+                    w1_ = w1_ + hist[n];
+                }
+                if (w1_ == 0)
+                {
+                    v1[l] = 0;
+                }
+                else
+                {
+                    v1[l] = v1_ / w1_;
+                }
+            }
+            #endregion
+
+            // get nilai WCV and WCV terkecil
+            #region mencari nilai WCV dan WCV terkecil
+            for (int l = 0; l < 256; l++)
+            {
+                WCV[l] = w1[l] * v1[l] + w2[l] * v2[l];
+                Debug.WriteLine("WCV[" + l + "] : " + WCV[l]);
+            }
+
+            double minWCV = WCV[1];
+            for (int l = 0; l < 256; l++)
+            {
+                if (minWCV < WCV[l])
+                {
+                    minWCV = minWCV;
+                }
+                else
+                {
+                    minWCV = WCV[l];
+                }
+
+            }
+            Debug.WriteLine("minimal WCV : " + minWCV);
+            #endregion
+
+            // nilai treshold diambil dari nilai index intensitas histogram gryscale yang mempunyai nilai WCV terkecil
+            int threshold = 0;
+            for (int l = 0; l < 256; l++)
+            {
+                if (minWCV == WCV[l])
+                {
+                    threshold = 1;
+                }
+            }
+            Debug.WriteLine("Threshold A: " + threshold);
+
+            // thresholding ==> konversi citra biner
+            // menggunakan nilai threshold yand didapat
+            #region thresholding
             for (int y = 0; y < h; y++)
             {
                 for (int x = 0; x < w; x++)
                 {
-                    p = bmp.GetPixel(x, y);
-                    i = p.B;
+                    p = bmp2.GetPixel(x, y);
+                    intensitas = p.B;
 
-                    if (i < 150)
+                    if (intensitas < threshold)
                     {
-                        bmp.SetPixel(x, y, Color.FromArgb(255, 255, 255));
+                        bmp2.SetPixel(x, y, Color.FromArgb(255, 255, 255));
                     }
                     else
                     {
-                        bmp.SetPixel(x, y, Color.FromArgb(0, 0, 0));
+                        bmp2.SetPixel(x, y, Color.FromArgb(0, 0, 0));
                     }
                 }
             }
-            pictureBox3.Image = bmp;
+            pictureBox4.Image = bmp2;
+            #endregion
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            // Deteksi tepi object
-            Bitmap bmp3 = new Bitmap(pictureBox3.Image); //citra biner
-            Bitmap bmp4 = new Bitmap(pictureBox3.Image); //citra biner
-
-            int h = bmp3.Height;
-            int w = bmp3.Width;
-
-            Color p, p8, p0, p1, p2, p3, p4, p5, p6, p7;
-            int r8 = 0, r0, r1, r2, r3, r4, r5, r6, r7;
-            int sigma = 0;
-
-            for (int q = 1; q < w - 1; q++)
-            {
-                for (int s = 1; s < h - 1; s++)
-                {
-                    p8 = bmp3.GetPixel(q, s);
-                    p0 = bmp3.GetPixel(q, s + 1);
-                    p1 = bmp3.GetPixel(q - 1, s + 1);
-                    p2 = bmp3.GetPixel(q - 1, s);
-                    p3 = bmp3.GetPixel(q - 1, s - 1);
-                    p4 = bmp3.GetPixel(q, s - 1);
-                    p5 = bmp3.GetPixel(q + 1, s - 1);
-                    p6 = bmp3.GetPixel(q + 1, s);
-                    p7 = bmp3.GetPixel(q + 1, s + 1);
-                    r8 = p8.R;
-                    r0 = p0.R;
-                    r1 = p1.R;
-                    r2 = p2.R;
-                    r3 = p3.R;
-                    r4 = p4.R;
-                    r5 = p5.R;
-                    r6 = p6.R;
-                    r7 = p7.R;
-
-                    sigma = r0 + r1 + r2 + r3 + r4 + r5 + r6 + r7;
-
-                    if (sigma == 2040) //nilai 2040 = semua piksel tetangga bernilai 255
-                    {
-                        bmp4.SetPixel(q, s, Color.FromArgb(0, 0, 0));
-                    }
-                    else
-                    {
-                        bmp4.SetPixel(q, s, Color.FromArgb(r8, r8, r8));
-                    }
-                }
-            }
-            pictureBox4.Image = bmp4;
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            Bitmap bmp = new Bitmap(pictureBox3.Image);
-            Bitmap bmp1 = new Bitmap(pictureBox4.Image);
-
-            int h = bmp1.Height;
-            int w = bmp1.Width;
-            Color p;
-
-            #region perimeter/ keliling
-            int perimeter = 0;
-            int a;
-            for (int y = 0; y < h; y++)
-            {
-                for (int x = 0; x < w; x++)
-                {
-                    p = bmp1.GetPixel(x, y);
-                    a = p.R;
-
-                    if (a == 255)
-                    {
-                        perimeter = perimeter + 1;
-                    }
-                }
-            }
-            Debug.WriteLine("perimeter : " + perimeter);
-            #endregion
-
-            #region luas/ area
-            int luas = 0;
-            for (int y = 0; y < h; y++)
-            {
-                for (int x = 0; x < w; x++)
-                {
-                    p = bmp.GetPixel(x, y);
-                    a = p.R;
-
-                    if (a == 255)
-                    {
-                        luas = luas + 1;
-                    }
-                }
-            }
-            Debug.WriteLine("luas area : " + luas);
-            #endregion
-
-            #region compactness
-            double compactness = 0.0;
-
-            compactness = 1 - ((4 * (22.0 / 7.0) * luas) / Math.Pow(perimeter, 2));
-            Debug.WriteLine("compactness : " + compactness);
-            #endregion
-
-            #region roundeness
-            double roudness = 0.0;
-
-            roudness = (4 * (22.0 / 7.0)) * (luas / Math.Pow(perimeter, 2));
-            Debug.WriteLine("roudness : " + roudness);
-            #endregion
         }
     }
 }
