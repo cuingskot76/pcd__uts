@@ -37,6 +37,7 @@
             textBox2 = new TextBox();
             button13 = new Button();
             textBox4 = new TextBox();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -127,11 +128,22 @@
             textBox4.TabIndex = 21;
             textBox4.Text = "Citra Biner";
             // 
+            // button2
+            // 
+            button2.Location = new Point(716, 459);
+            button2.Name = "button2";
+            button2.Size = new Size(159, 45);
+            button2.TabIndex = 22;
+            button2.Text = "Tekstur from GLCM";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1304, 663);
+            Controls.Add(button2);
             Controls.Add(textBox4);
             Controls.Add(button13);
             Controls.Add(textBox2);
@@ -161,5 +173,6 @@
         private TextBox textBox2;
         private Button button13;
         private TextBox textBox4;
+        private Button button2;
     }
 }
