@@ -320,7 +320,7 @@ namespace WinFormsApp1
                     p = bmp2.GetPixel(x, y);
                     intensitas = p.B;
 
-                    if (intensitas < threshold)
+                    if (intensitas < 160)
                     {
                         bmp2.SetPixel(x, y, Color.FromArgb(255, 255, 255));
                     }
