@@ -585,5 +585,388 @@ namespace WinFormsApp1
             }
             Debug.WriteLine("homogenitas : " + homogenitas);
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp1 = new Bitmap(pictureBox1.Image);
+            //mendapatkan dimensi image
+            int height = bmp1.Height;
+            int width = bmp1.Width;
+            Bitmap bmp3 = new Bitmap(pictureBox4.Image);
+            Double red = 0, orange = 0, yellow = 0, green = 0, cyan = 0, blue = 0,
+            purple = 0, magenta = 0, pink = 0, gray = 0, black = 0, white = 0;
+            Double derajatRed = 0, derajatOrange = 0, derajatYellow = 0, derajatGreen = 0,
+            derajatCyan = 0, derajatBlue = 0, derajatPurple = 0, derajatGray = 0,
+            derajatWhite = 0, derajatBlack = 0;
+            Double derajatMagenta = 0, derajatPink = 0;
+            int jumPixelBuah = 0;
+            Double persentaseRed, persentaseOrange, persentaseYellow,
+            persentaseGreen, persentaseCyan, persentaseBlue, persentasePurple,
+            persentaseMagenta, persentasePink, persentaseGray, persentaseWhite,
+            persentaseBlack;
+            double jumlahSeluruhDerajat = 0;
+            //kelas color
+            Color p;
+            Bitmap bmp2 = new Bitmap(pictureBox1.Image);
+            int height2 = bmp2.Height;
+            int width2 = bmp2.Width;
+            //menentukan panjang array untuk menyimpan nilai HSV
+            int panjangArray = height2 * width2;
+            //membuat array untuk menyimpan nilai Hue Saturation and Value
+            Double[,] H = new Double[width2, height2];
+            Double[,] S = new Double[width2, height2];
+            Double[,] V = new Double[width2, height2];
+            //konversi ke HSV
+            Double r1, g1, b1, rgb;
+            for (int y = 0; y < height2; y++)
+            {
+                for (int x = 0; x < width2; x++)
+                {
+                    p = bmp2.GetPixel(x, y);
+                    rgb = p.R + p.G + p.B;
+                    r1 = p.R / rgb;
+                    g1 = p.G / rgb;
+                    b1 = p.B / rgb;
+                    //Value(V)
+                    V[x, y] = Math.Max(Math.Max(r1, g1), b1);
+                    //Saturation(S)
+                    if (V[x, y] == 0)
+                    {
+                        S[x, y] = 0;
+                    }
+                    else
+                    {
+                        S[x, y] = 1 - Math.Min(Math.Min(r1, g1), b1) / V[x, y];
+                    }
+                    //Hue(H)
+                    if (S[x, y] == 0)
+                    {
+                        H[x, y] = 0;
+                    }
+                    else if (V[x, y] == r1)
+                    {
+                        H[x, y] = 60 * (g1 - b1) / (S[x, y] * V[x, y]);
+                    }
+                    else if (V[x, y] == g1)
+                    {
+                        H[x, y] = 60 * (2 + (b1 - r1) / (S[x, y] * V[x, y]));
+                    }
+                    else if (V[x, y] == b1)
+                    {
+                        H[x, y] = 60 * (4 + (r1 - g1) / (S[x, y] * V[x, y]));
+                    }
+                    if (H[x, y] < 0)
+                    {
+                        H[x, y] = H[x, y] + 360;
+                    }
+                    if (H[x, y] > 255)
+                    {
+                        // Debug.WriteLine("H : "+H[x,y]);
+                    }
+                }
+            }
+            //Menghitung derajaat keanggotaan tiap warna
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    p = bmp3.GetPixel(x, y);
+                    if (p.R == 255 && p.G == 255 && p.B == 255)
+                    {
+                        //Red segitiga kanan
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatRed = 0;
+                        }
+                        else if (H[x, y] >= 0 && H[x, y] <= 21)
+                        {
+                            derajatRed = (21 - H[x, y]) / 21;
+                        }
+                        //Red segitiga kiri
+                        else if (H[x, y] == 255)
+                        {
+                            derajatRed = 1;
+                        }
+                        else if (H[x, y] > 234 && H[x, y] <= 255)
+                        {
+                            derajatRed = (H[x, y] - 234) / (255 - 234);
+                        }
+                        red = red + derajatRed;
+                        //Orange
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatOrange = 0;
+                        }
+                        else if (H[x, y] > 0 && H[x, y] <= 21)
+                        {
+                            derajatOrange = (H[x, y] - 0) / 21;
+                        }
+                        else if (H[x, y] > 21 && H[x, y] < 43)
+                        {
+                            derajatOrange = (43 - H[x, y]) / (43 - 21);
+                        }
+                        orange = orange + derajatOrange;
+                        //Yellow
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatYellow = 0;
+                        }
+                        else if (H[x, y] > 21 && H[x, y] <= 43)
+                        {
+                            derajatYellow = (H[x, y] - 21) / (43 - 21);
+                        }
+                        else if (H[x, y] > 43 && H[x, y] <= 65)
+                        {
+                            derajatYellow = (65 - H[x, y]) / (65 - 43);
+                        }
+                        yellow = yellow + derajatYellow;
+                        //Cyan
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatCyan = 0;
+                        }
+                        else if (H[x, y] > 105 && H[x, y] <= 128)
+                        {
+                            derajatCyan = (H[x, y] - 105) / (128 - 105);
+                        }
+                        else if (H[x, y] > 128 && H[x, y] <= 155)
+                        {
+                            derajatCyan = (155 - H[x, y]) / (155 - 128);
+                        }
+                        cyan = cyan;
+                        //Green (Trapesium)
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatGreen = 0;
+                        }
+                        else if (H[x, y] > 43 && H[x, y] < 65)
+                        {
+                            derajatGreen = (H[x, y] - 43) / (65 - 43);
+                        }
+                        else if (H[x, y] >= 65 && H[x, y] <= 105)
+                        {
+                            derajatGreen = 1;
+                        }
+                        else if (H[x, y] > 105 && H[x, y] <= 128)
+                        {
+                            derajatGreen = (128 - H[x, y]) / (128 - 105);
+                        }
+                        green = green + derajatGreen + derajatCyan;
+                        //Blue (Trapesium)
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatBlue = 0;
+                        }
+                        else if (H[x, y] > 128 && H[x, y] < 155)
+                        {
+                            derajatBlue = (H[x, y] - 128) / (155 - 128);
+                        }
+                        else if (H[x, y] >= 155 && H[x, y] <= 180)
+                        {
+                            derajatBlue = 1;
+                        }
+                        else if (H[x, y] > 180 && H[x, y] <= 191)
+                        {
+                            derajatBlue = (191 - H[x, y]) / (191 - 180);
+                        }
+                        blue = blue + derajatBlue;
+                        //Purple
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatPurple = 0;
+                        }
+                        else if (H[x, y] >= 180 && H[x, y] <= 191)
+                        {
+                            derajatPurple = (H[x, y] - 180) / (191 - 180);
+                        }
+                        else if (H[x, y] > 191 && H[x, y] <= 213)
+                        {
+                            derajatPurple = (213 - H[x, y]) / (213 - 191);
+                        }
+                        purple = purple + derajatPurple;
+                        //Magenta
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatMagenta = 0;
+                        }
+                        else if (H[x, y] > 191 && H[x, y] < 213)
+                        {
+                            derajatMagenta = (H[x, y] - 191) / (213 - 191);
+                        }
+                        else if (H[x, y] > 213 && H[x, y] < 234)
+                        {
+                            derajatMagenta = (234 - H[x, y]) / (234 - 213);
+                        }
+                        magenta = magenta + derajatMagenta;
+                        //Pink
+                        if (H[x, y] == 0 && S[x, y] == 0)
+                        {
+                            derajatPink = 0;
+                        }
+                        else if (H[x, y] >= 213 && H[x, y] <= 234)
+                        {
+                            derajatPink = (H[x, y] - 213) / (234 - 213);
+                        }
+                        else if (H[x, y] > 234 && H[x, y] <= 255)
+                        {
+                            derajatPink = (255 - H[x, y]) / (255 - 234);
+                        }
+                        pink = pink + derajatPink;
+                        //Gray
+                        if (S[x, y] > 0 && S[x, y] <= 0.2)
+                        {
+                            derajatGray = 1;
+                        }
+                        gray = gray + derajatGray;
+                        //White
+                        if (S[x, y] == 0)
+                        {
+                            derajatWhite = 1;
+                        }
+                        white = white + derajatWhite;
+                        //Black
+                        if (V[x, y] == 0)
+                        {
+                            derajatBlack = 1;
+                        }
+                        black = black + derajatBlack;
+                        jumPixelBuah = jumPixelBuah + 1;
+                    }
+                }
+            }
+            jumlahSeluruhDerajat = (red + orange + yellow + green + cyan + blue + purple + magenta + pink + gray + white +
+           black);
+            persentaseRed = Math.Round(((red / jumlahSeluruhDerajat) * 100), 2);
+            persentaseOrange = Math.Round(((orange / jumlahSeluruhDerajat) * 100), 2);
+            persentaseYellow = Math.Round(((yellow / jumlahSeluruhDerajat) * 100), 2);
+            persentaseGreen = Math.Round(((green / jumlahSeluruhDerajat) * 100), 2);
+            persentaseCyan = Math.Round((cyan / jumlahSeluruhDerajat * 100), 2);
+            persentaseBlue = Math.Round((blue / jumlahSeluruhDerajat * 100), 2);
+            persentasePurple = Math.Round((purple / jumlahSeluruhDerajat * 100), 2);
+            persentaseMagenta = Math.Round((magenta / jumlahSeluruhDerajat * 100), 2);
+            persentasePink = Math.Round((pink / jumlahSeluruhDerajat * 100), 2);
+            persentaseGray = Math.Round((gray / jumlahSeluruhDerajat * 100), 2);
+            persentaseBlack = Math.Round((black / jumlahSeluruhDerajat * 100), 2);
+            persentaseWhite = Math.Round((white / jumlahSeluruhDerajat * 100), 2);
+            Debug.WriteLine("jumlah seluruh derajat : " + jumlahSeluruhDerajat);
+            Debug.WriteLine("persentase Red :" + persentaseRed);
+            Debug.WriteLine("persentase Orange :" + persentaseOrange);
+            Debug.WriteLine("persentase Yellow :" + persentaseYellow);
+            Debug.WriteLine("persentase Green :" + persentaseGreen);
+            Debug.WriteLine("persentase Cyan :" + persentaseCyan);
+            Debug.WriteLine("persentase Blue :" + persentaseBlue);
+            Debug.WriteLine("persentase Purple :" + persentasePurple);
+            Debug.WriteLine("persentase Magenta :" + persentaseMagenta);
+            Debug.WriteLine("persentase Pink :" + persentasePink);
+            Debug.WriteLine("persentase Gray :" + persentaseGray);
+            Debug.WriteLine("persentase Black :" + persentaseBlack);
+            Debug.WriteLine("persentase White :" + persentaseWhite);
+            //Segmentasi
+            Double[,] C = new Double[width2, height2];
+            Double[,] X = new Double[width2, height2];
+            Double[,] m = new Double[width2, height2];
+            Double[,] H1 = new Double[width2, height2];
+            Double R1 = 0, G1 = 0, B1 = 0;
+            Bitmap bmp4 = new Bitmap(pictureBox1.Image);
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    p = bmp3.GetPixel(x, y);
+                    if (p.R == 255 && p.G == 255 && p.B == 255)
+                    {
+                        //Ubah komponen Hue
+                        if (H[x, y] <= 11)
+                        {
+                            H[x, y] = 0;
+                        }
+                        else if (H[x, y] > 11 && H[x, y] <= 37)
+                        {
+                            H[x, y] = 21;
+                        }
+                        else if (H[x, y] > 37 && H[x, y] <= 54)
+                        {
+                            H[x, y] = 58;
+                        }
+                        else if (H[x, y] > 54 && H[x, y] <= 116)
+                        {
+                            H[x, y] = 95;
+                        }
+                        else if (H[x, y] > 116 && H[x, y] <= 141)
+                        {
+                            H[x, y] = 128;
+                        }
+                        else if (H[x, y] > 141 && H[x, y] <= 185)
+                        {
+                            H[x, y] = 170;
+                        }
+                        else if (H[x, y] > 185 && H[x, y] <= 202)
+                        {
+                            H[x, y] = 191;
+                        }
+                        else if (H[x, y] > 202 && H[x, y] <= 223)
+                        {
+                            H[x, y] = 213;
+                        }
+                        else if (H[x, y] > 223 && H[x, y] <= 244)
+                        {
+                            H[x, y] = 234;
+                        }
+                        else
+                        {
+                            H[x, y] = 0;
+                        }
+                        //Konversi HSV Ke RGB
+                        if (S[x, y] == 0)
+                        {
+                            R1 = Convert.ToInt16(V[x, y]);
+                            G1 = Convert.ToInt16(V[x, y]);
+                            B1 = Convert.ToInt16(V[x, y]);
+                        }
+                        else
+                        {
+                            H[x, y] = H[x, y] / 60;
+                            Double sektor;
+                            sektor = Math.Floor(H[x, y]);
+                            Double faktor = H[x, y] - sektor;
+                            Double p1, q, t;
+                            p1 = V[x, y] * (1 - S[x, y]);
+                            q = V[x, y] * (1 - (S[x, y] * faktor));
+                            t = V[x, y] * (1 - (S[x, y] * (1 - faktor)));
+                            if (sektor == 0)
+                            {
+                                R1 = (V[x, y]) * 255;
+                                G1 = t * 255;
+                                B1 = p1 * 255;
+                            }
+                            else if (sektor == 1)
+                            {
+                                R1 = q * 255;
+                                G1 = (V[x, y]) * 255;
+                                B1 = p1 * 255;
+                            }
+                            else if (sektor == 2)
+                            {
+                                R1 = q * 255;
+                                G1 = (V[x, y]) * 255;
+                                B1 = p1 * 255;
+                            }
+                            bmp4.SetPixel(x, y, Color.FromArgb(Convert.ToInt32(Math.Round(R1)),
+                           Convert.ToInt32(Math.Round(G1)), Convert.ToInt32(Math.Round(B1))));
+                        }
+                        if (H1[x, y] > 0)
+                        {
+                            //Debug.WriteLine(" H : " + H1[x,y]);
+                        }
+                    }
+                }
+            }
+            pictureBox3.Image = bmp4;
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

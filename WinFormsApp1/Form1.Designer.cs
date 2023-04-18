@@ -38,9 +38,12 @@
             button13 = new Button();
             textBox4 = new TextBox();
             button2 = new Button();
+            button4 = new Button();
+            pictureBox3 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -138,11 +141,33 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // button4
+            // 
+            button4.Location = new Point(929, 403);
+            button4.Name = "button4";
+            button4.Size = new Size(159, 45);
+            button4.TabIndex = 23;
+            button4.Text = "Konversi ke HSV";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.Location = new Point(1050, 71);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(257, 267);
+            pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox3.TabIndex = 24;
+            pictureBox3.TabStop = false;
+            pictureBox3.Click += pictureBox3_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1304, 663);
+            Controls.Add(pictureBox3);
+            Controls.Add(button4);
             Controls.Add(button2);
             Controls.Add(textBox4);
             Controls.Add(button13);
@@ -158,6 +183,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -174,5 +200,7 @@
         private Button button13;
         private TextBox textBox4;
         private Button button2;
+        private Button button4;
+        private PictureBox pictureBox3;
     }
 }
